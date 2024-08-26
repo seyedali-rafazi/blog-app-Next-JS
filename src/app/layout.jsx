@@ -3,7 +3,6 @@ import vazirFont from "@/constants/localFont";
 import "@/styles/globals.css";
 
 export const metadata = {
-  // title: "بلاگ اپ",
   title: {
     template: "%s | بلااگ اپ",
     default: "بلاگ اپ", // a default is required when creating a template

@@ -10,7 +10,8 @@
       "@/ui/*": ["ui/*"],
       "@/lib/*": ["lib/*"],
       "@/styles/*": ["styles/*"],
-      "@/constants/*": ["constants/*"]
+      "@/constants/*": ["constants/*"],
+      "@/hooks/*": ["hooks/*"]
     }
   }
 }
