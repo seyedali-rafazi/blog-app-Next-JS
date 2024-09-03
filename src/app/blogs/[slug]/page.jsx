@@ -1,15 +1,25 @@
+import { getPostBySlug, getPosts } from "@/services/postService";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import React from "react";
 
-async function SinglePost({ params }) {
-  // await new Promise((res) => setTimeout(() => res(), 3000));
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/post/slug/${params.postSlug}`
-  );
-  const { data } = await res.json();
-  const { post } = data || {};
+export const dynamicParams = false;
 
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  const slugs = posts.map((post) => ({ slug: post.slug }));
+  return slugs;
+}
+
+export async function generateMetadata({ params }) {
+  const post = await getPostBySlug(params.slug);
+  return {
+    title: ` پست ${post.title}`,
+  };
+}
+
+async function SinglePost({ params }) {
+  const post = await getPostBySlug(params.slug);
   if (!post) notFound();
 
   return (
