@@ -4,9 +4,10 @@ import RHFTextField from "@/ui/RHFTextField";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { signupApi } from "@/services/authService";
-import toast from "react-hot-toast";
-import { useRouter } from "next/router";
+
+import { useAuth } from "@/context/AuthContext";
+import { SpinnerMini } from "@/ui/Spinner";
+import Link from "next/link";
 
 const schema = yup
   .object({
@@ -30,17 +31,9 @@ function Signup() {
     mode: "onTouched",
   });
 
-  const router = useRouter();
-
+  const { signup } = useAuth();
   const onSubmit = async (value) => {
-    try {
-      const { user, message } = await signupApi(value);
-      console.log(user, message);
-      toast.success("ثبت نام موفقیت آمیز بود");
-      router.push("/profile");
-    } catch (error) {
-      toast.error(error?.response?.data?.message);
-    }
+    await signup(value);
   };
 
   return (
@@ -70,13 +63,22 @@ function Signup() {
           dir="ltr"
           errors={errors}
         />
-        <Button
-          type="submit"
-          className="py-3 px-4 btn btn--primary rounded-xl w-full"
-        >
-          تایید
-        </Button>
+        <div>
+          {isLoading ? (
+            <SpinnerMini />
+          ) : (
+            <Button
+              type="submit"
+              className="py-3 px-4 btn btn--primary rounded-xl w-full"
+            >
+              تایید
+            </Button>
+          )}
+        </div>
       </form>
+      <Link href="/signin" className="text-secondary-400 mt-6 text-center">
+        ورود
+      </Link>
     </div>
   );
 }
