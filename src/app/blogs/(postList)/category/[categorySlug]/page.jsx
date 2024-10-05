@@ -1,13 +1,16 @@
+import { getPosts } from "@/services/postService";
+import SetCookieOnReq from "@/utils/setCookieOnReq";
 import PostList from "app/blogs/_components/PostList";
+import { cookies } from "next/headers";
+import queryString from "query-string";
 
-async function category({ params }) {
+async function category({ params, searchParams }) {
   const { categorySlug } = params;
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/post/list?categorySlug=${categorySlug}`
-  );
-  const { data } = await res.json();
-  const { posts } = data || {};
+  const queries =
+    queryString.stringify(searchParams) + `&categorySlug=${categorySlug}`;
+  const cookieStore = cookies();
+  const options = SetCookieOnReq(cookieStore);
+  const { posts } = await getPosts(queries, options);
 
   return (
     <div>
