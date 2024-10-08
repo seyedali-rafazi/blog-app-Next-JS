@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import React from "react";
 import RelatedPost from "../_components/RelatedPost";
+import PostComment from "../_components/comment/postComment";
 
 export const dynamicParams = false;
 
@@ -38,7 +39,7 @@ async function SinglePost({ params }) {
         />
       </div>
       {post.related.length > 0 && <RelatedPost posts={post.related} />}
-      {/* <BlogComments post={post} /> */}
+      <PostComment post={post} />
     </div>
   );
 }
